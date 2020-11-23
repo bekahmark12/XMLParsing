@@ -12,7 +12,7 @@ public class XMLHandler extends DefaultHandler {
     @Override
     public void endElement(String uri,
                            String localName, String qName) {
-        if (qName.equalsIgnoreCase("student")) {
+        if (qName.equalsIgnoreCase("Customer")) {
             System.out.println("End Element :" + qName);
         }
     }
