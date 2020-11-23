@@ -3,67 +3,48 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 public class XMLHandler extends DefaultHandler {
-    private int countTags = 0;
-    private boolean inElement = false;
+
+    private boolean customerIdSet = false;
+    private StringBuilder stringBuilder;
+    private Customer customer;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        System.out.println("<" + qName + ">");
-        inElement = true;
+
+        stringBuilder = new StringBuilder();
+
+        if (qName.equals("Customer")){
+           customer = new Customer();
+           customerIdSet = false;
+       }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        countTags++;
-        System.out.println("</" + qName + ">");
-        inElement = false;
+       if (customer != null){
+           if (qName.equals("CustomerId")){
+               if (!customerIdSet) {
+                   customer.setId(Integer.parseInt(stringBuilder.toString()));
+               }
+           }else if (qName.equals("Age")){
 
-        if(countTags > 15) {
-            // throw some exception to stop parsing
-        }
+               customer.setAge(stringBuilder.toString());
+           }else if (qName.equals("Name")){
+
+               customer.setName(stringBuilder.toString());
+           }else if (qName.equals("Email")){
+
+               customer.setEmail(stringBuilder.toString());
+
+           } else if (qName.equals("Customer")){
+               System.out.println(customer.toString());
+           }
+       }
+
     }
 
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if(inElement) {
-            System.out.println(new String(ch, start, length));
-        }
+        stringBuilder.append(ch,start, length);
     }
-
-
-
-//    boolean bName = false;
-//    boolean bCustomerId = false;
-//
-//
-//
-//    @Override
-//    public void endElement(String uri,
-//                           String localName, String qName) {
-//        if (qName.equalsIgnoreCase("Customer")) {
-//            System.out.println("End Element :" + qName);
-//        }
-//    }
-//
-//    @Override
-//    public void characters(char ch[], int start, int length) {
-//
-//        if (bName) {
-//            System.out.println("Name: "
-//                    + new String(ch, start, length));
-//            bName = false;
-//        } else if (bCustomerId) {
-//            System.out.println("Customer ID: " + new String(ch, start, length));
-//            bCustomerId = false;
-//        }
-//    }
-//
-//    @Override
-//    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-//        if (qName.equalsIgnoreCase("Name")) {
-//            bName = true;
-//        } else if (qName.equalsIgnoreCase("CustomerId")) {
-//            bCustomerId = true;
-//        }
-//    }
 }
