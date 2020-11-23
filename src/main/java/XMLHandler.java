@@ -26,17 +26,25 @@ public class XMLHandler extends DefaultHandler {
                if (!customerIdSet) {
                    customer.setId(Integer.parseInt(stringBuilder.toString()));
                }
-           }else if (qName.equals("Age")){
-
+               //Set Order's Cusotmer id
+           }
+           else if (qName.equals("Age")){
                customer.setAge(stringBuilder.toString());
-           }else if (qName.equals("Name")){
-
+           }
+           else if (qName.equals("Name")){
                customer.setName(stringBuilder.toString());
-           }else if (qName.equals("Email")){
-
+           }
+           else if (qName.equals("Email")){
                customer.setEmail(stringBuilder.toString());
+           }
 
-           } else if (qName.equals("Customer")){
+
+
+
+           else if (qName.equals("Order")){
+               System.out.println();
+           }
+           else if (qName.equals("Customer")){
                System.out.println(customer.toString());
            }
        }
