@@ -7,6 +7,8 @@ public class XMLHandler extends DefaultHandler {
     private boolean customerIdSet = false;
     private StringBuilder stringBuilder;
     private Customer customer;
+    private Order order;
+    private OrderLine orderLine;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
@@ -16,6 +18,8 @@ public class XMLHandler extends DefaultHandler {
         if (qName.equals("Customer")){
            customer = new Customer();
            customerIdSet = false;
+           order = new Order();
+           orderLine = new OrderLine();
        }
     }
 
@@ -25,6 +29,7 @@ public class XMLHandler extends DefaultHandler {
            if (qName.equals("CustomerId")){
                if (!customerIdSet) {
                    customer.setId(Integer.parseInt(stringBuilder.toString()));
+                   order.setCustomerId(Integer.parseInt(stringBuilder.toString()));
                }
                //Set Order's Cusotmer id
            }
@@ -36,13 +41,28 @@ public class XMLHandler extends DefaultHandler {
            }
            else if (qName.equals("Email")){
                customer.setEmail(stringBuilder.toString());
+           }else if (qName.equals("OrderId")){
+               order.setOrderId(Integer.parseInt(stringBuilder.toString()));
+           }else if (qName.equals("OrderLineId")){
+                orderLine.setOrderLineId(Integer.parseInt(stringBuilder.toString()));
+           }else if (qName.equals("Price")){
+               orderLine.setPrice(Integer.parseInt(stringBuilder.toString()));
            }
+           else if (qName.equals("ProductId")){
+               orderLine.setProductId(Integer.parseInt(stringBuilder.toString()));
+           }
+           else if (qName.equals("Qty")){
+               orderLine.setQuantity(Integer.parseInt(stringBuilder.toString()));
 
-
-
-
+           }else if (qName.equals("Total")){
+               order.setTotal(Integer.parseInt(stringBuilder.toString()));
+               orderLine.setTotal(Integer.parseInt(stringBuilder.toString()));
+           }
            else if (qName.equals("Order")){
-               System.out.println();
+               System.out.println(order.toString());
+           }
+           else if (qName.equals("OrderLine")){
+               System.out.println(orderLine.toString());
            }
            else if (qName.equals("Customer")){
                System.out.println(customer.toString());

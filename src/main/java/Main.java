@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            File inputFile = new File("C:\\Users\\Yaksh Patel\\Desktop\\customers.xml");
+            File inputFile = new File("C:\\Users\\Yaksh Patel\\Desktop\\test2.xml");
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             XMLHandler userhandler = new XMLHandler();
