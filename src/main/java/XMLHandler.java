@@ -2,13 +2,19 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class XMLHandler extends DefaultHandler {
 
     private boolean customerIdSet = false;
     private StringBuilder stringBuilder;
     private Customer customer;
     private Order order;
-    private OrderLine orderLine;
+    private List<OrderLine> orderLines;
+    private OrderLine tempOrderLine;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
@@ -19,7 +25,8 @@ public class XMLHandler extends DefaultHandler {
            customer = new Customer();
            customerIdSet = false;
            order = new Order();
-           orderLine = new OrderLine();
+           orderLines = new ArrayList<>();
+           tempOrderLine = new OrderLine();
        }
     }
 
@@ -39,34 +46,69 @@ public class XMLHandler extends DefaultHandler {
            else if (qName.equals("Name")){
                customer.setName(stringBuilder.toString());
            }
-           else if (qName.equals("Email")){
+           else if (qName.equals("Email")) {
                customer.setEmail(stringBuilder.toString());
            }else if (qName.equals("OrderId")){
                order.setOrderId(Integer.parseInt(stringBuilder.toString()));
            }else if (qName.equals("OrderLineId")){
-                orderLine.setOrderLineId(Integer.parseInt(stringBuilder.toString()));
+                tempOrderLine.setOrderLineId(Integer.parseInt(stringBuilder.toString()));
            }else if (qName.equals("Price")){
-               orderLine.setPrice(Integer.parseInt(stringBuilder.toString()));
+               tempOrderLine.setPrice(Integer.parseInt(stringBuilder.toString()));
            }
            else if (qName.equals("ProductId")){
-               orderLine.setProductId(Integer.parseInt(stringBuilder.toString()));
+               tempOrderLine.setProductId(Integer.parseInt(stringBuilder.toString()));
            }
            else if (qName.equals("Qty")){
-               orderLine.setQuantity(Integer.parseInt(stringBuilder.toString()));
+               tempOrderLine.setQuantity(Integer.parseInt(stringBuilder.toString()));
 
            }else if (qName.equals("Total")){
                order.setTotal(Integer.parseInt(stringBuilder.toString()));
-               orderLine.setTotal(Integer.parseInt(stringBuilder.toString()));
+               tempOrderLine.setTotal(Integer.parseInt(stringBuilder.toString()));
            }
-           else if (qName.equals("Order")){
-               System.out.println(order.toString());
-           }
+
            else if (qName.equals("OrderLine")){
-               System.out.println(orderLine.toString());
+
+              orderLines.add(tempOrderLine);
+              tempOrderLine = new OrderLine();
+
            }
-           else if (qName.equals("Customer")){
-               System.out.println(customer.toString());
+
+           else if (qName.equals("Order")){
+
+               for (OrderLine orderLine: orderLines) {
+                   orderLine.setOrderId(order.getOrderId());
+
+                   System.out.println(orderLine.toString());
+                   try {
+                       FileWriter fileWriter = new FileWriter("orderLines.txt",true);
+                       fileWriter.write(orderLine.toString()+"\n");
+                       fileWriter.close();
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               }
+
+               orderLines.clear();
+
+//               try {
+//                   FileWriter fileWriter = new FileWriter("orders.txt",true);
+//                   fileWriter.write(order.toString()+"\n");
+//                   fileWriter.close();
+//               } catch (IOException e) {
+//                   e.printStackTrace();
+//               }
            }
+//            else if (qName.equals("Customer")){
+//
+//               System.out.println(customer.toString());
+//               try {
+//                   FileWriter fileWriter = new FileWriter("customers.txt",true);
+//                   fileWriter.write(customer.toString()+"\n");
+//                    fileWriter.close();
+//               } catch (IOException e) {
+//                   e.printStackTrace();
+//               }
+//           }
        }
 
     }

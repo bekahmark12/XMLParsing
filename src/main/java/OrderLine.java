@@ -4,6 +4,15 @@ public class OrderLine {
     private int ProductId;
     private int Quantity;
     private int Total;
+    private int OrderId;
+
+    public int getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(int orderId) {
+        OrderId = orderId;
+    }
 
     public int getOrderLineId() {
         return OrderLineId;
@@ -47,12 +56,6 @@ public class OrderLine {
 
     @Override
     public String toString() {
-        return "OrderLine{" +
-                "OrderLineId=" + OrderLineId +
-                ", Price=" + Price +
-                ", ProductId=" + ProductId +
-                ", Quantity=" + Quantity +
-                ", Total=" + Total +
-                '}';
+        return OrderLineId + "," + Price + "," + ProductId + "," +Quantity +"," +Total + "," +OrderId;
     }
 }

@@ -29,10 +29,6 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "OrderId=" + OrderId +
-                ", CustomerId=" + CustomerId +
-                ", Total=" + Total +
-                '}';
+        return OrderId + "," +  CustomerId  + "," + Total;
     }
 }
